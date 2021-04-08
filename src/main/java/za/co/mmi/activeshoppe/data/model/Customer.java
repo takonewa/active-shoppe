@@ -20,6 +20,5 @@ public class Customer{
     @SequenceGenerator(name = "customer", sequenceName = "customer_seq", allocationSize = 1)
     private Long id;
     private String name;
-    private String code;
     private BigInteger balance;
 }

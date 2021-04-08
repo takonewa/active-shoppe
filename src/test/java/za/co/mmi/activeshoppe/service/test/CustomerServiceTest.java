@@ -1,4 +1,4 @@
-package za.co.mmi.activeshoppe.service;
+package za.co.mmi.activeshoppe.service.test;
 
 import lombok.extern.java.Log;
 import org.junit.jupiter.api.extension.ExtendWith;

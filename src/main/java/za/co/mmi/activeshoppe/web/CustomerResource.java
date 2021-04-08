@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import za.co.mmi.activeshoppe.data.model.Customer;
 import za.co.mmi.activeshoppe.service.CustomerService;
-import za.co.mmi.activeshoppe.service.dto.CustomerDTO;
 import za.co.mmi.activeshoppe.service.exception.CustomerNotFoundException;
 
 import java.util.List;
@@ -29,27 +29,27 @@ public class CustomerResource {
 
     @GetMapping("/")
     @ApiOperation(value = "List All Customers")
-    public List<CustomerDTO> listAll() {
-        return customerService.getAllProducts();
+    public List<Customer> listAll() {
+        return customerService.getAllCustomers();
     }
 
     @GetMapping("/{customer-id}")
     @ApiOperation(value = "Get Customer By UUID")
-    public CustomerDTO getCustomer(@PathVariable("customer-id") String customerId) throws CustomerNotFoundException {
-        return customerService.get(customerId);
+    public Customer getCustomer(@PathVariable("customer-id") Long customerId) throws CustomerNotFoundException {
+        return customerService.getCustomer(customerId);
     }
 
     @PostMapping("/")
     @ApiOperation(value = "Create New Customer")
-    public ResponseEntity addCustomer(@RequestBody CustomerDTO customerDTO) {
-        customerService.add(customerDTO);
+    public ResponseEntity addCustomer(@RequestBody Customer customer) {
+        customerService.creatCustomer(customer);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/")
     @ApiOperation(value = "Update Existing Customer")
-    public ResponseEntity updateCustomer(@RequestBody CustomerDTO customerDTO) throws CustomerNotFoundException {
-        customerService.update(customerDTO);
+    public ResponseEntity updateCustomer(@RequestBody Customer customer) throws CustomerNotFoundException {
+        customerService.updateCustomer(customer);
         return ResponseEntity.ok().build();
     }
 }

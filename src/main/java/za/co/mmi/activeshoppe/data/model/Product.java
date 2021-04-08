@@ -20,7 +20,6 @@ public class Product {
     @SequenceGenerator(name = "product", sequenceName = "product_seq", allocationSize = 1)
     private Long id;
     private String name;
-    private String code;
     private BigInteger price;
     private BigInteger quantity;
 }

@@ -1,10 +1,9 @@
-package za.co.mmi.activeshoppe.service.dto;
+package za.co.mmi.activeshoppe.service.model;
 
 import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

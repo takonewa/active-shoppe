@@ -19,8 +19,8 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_item")
     @SequenceGenerator(name = "cart_item", sequenceName = "cart_item_seq", allocationSize = 1)
     private Long id;
-    private String product;
-    private String customer;
+    private Long product;
+    private Long customer;
     private String productName;
     private BigInteger quantity;
     private BigInteger totalPrice;

@@ -1,4 +1,4 @@
-package za.co.mmi.activeshoppe.service.dto;
+package za.co.mmi.activeshoppe.service.model;
 
 import lombok.Data;
 
@@ -6,6 +6,6 @@ import java.math.BigInteger;
 
 @Data
 public class PurchaseRequest {
-    private String productUuid;
+    private Long productId;
     private BigInteger quantity;
 }

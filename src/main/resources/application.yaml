@@ -32,3 +32,11 @@ springdoc:
     disable-swagger-default-url: true
     url: ${server.servlet.context-path}/v3/api-docs
     config-url: ${server.servlet.context-path}/v3/api-docs/swagger-config
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      base-path: /metrics

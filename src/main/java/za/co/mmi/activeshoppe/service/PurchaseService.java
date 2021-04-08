@@ -3,12 +3,11 @@ package za.co.mmi.activeshoppe.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import za.co.mmi.activeshoppe.data.model.CartItem;
+import za.co.mmi.activeshoppe.data.model.Product;
 import za.co.mmi.activeshoppe.data.repo.CartItemRepo;
-import za.co.mmi.activeshoppe.service.dto.Cart;
-import za.co.mmi.activeshoppe.service.dto.CartEntry;
-import za.co.mmi.activeshoppe.service.dto.CustomerDTO;
-import za.co.mmi.activeshoppe.service.dto.ProductDTO;
-import za.co.mmi.activeshoppe.service.dto.PurchaseRequest;
+import za.co.mmi.activeshoppe.service.model.Cart;
+import za.co.mmi.activeshoppe.service.model.CartEntry;
+import za.co.mmi.activeshoppe.service.model.PurchaseRequest;
 import za.co.mmi.activeshoppe.service.exception.CustomerNotFoundException;
 import za.co.mmi.activeshoppe.service.exception.InsufficientBalanceException;
 import za.co.mmi.activeshoppe.service.exception.InsufficientQuantityException;
@@ -27,7 +26,7 @@ public class PurchaseService {
     private ProductService productService;
     private CustomerService customerService;
 
-    public Cart getCart(String customerId) {
+    public Cart getCart(Long customerId) {
         List<CartEntry> items = StreamSupport
                 .stream(repo.findByCustomer(customerId).spliterator(), false)
                 .map(e -> modelToCartEntry(e))
@@ -46,17 +45,16 @@ public class PurchaseService {
                 .reduce(BigInteger.ZERO, BigInteger::add);
     }
 
-    public void buy(String customerId, PurchaseRequest purchaseRequest) throws CustomerNotFoundException, InsufficientBalanceException, ProductNotFoundException, InsufficientQuantityException {
-        CustomerDTO customerDTO = customerService.get(customerId);
-        ProductDTO product = productService.getProduct(purchaseRequest.getProductUuid());
+    public void buy(Long customerId, PurchaseRequest purchaseRequest) throws CustomerNotFoundException, InsufficientBalanceException, ProductNotFoundException, InsufficientQuantityException {
+        Product product = productService.getProduct(purchaseRequest.getProductId());
         BigInteger price = product.getPrice().multiply(purchaseRequest.getQuantity());
-        customerService.reduceBalance(customerDTO.getUuid(), price);
-        productService.reduceQuantity(product.getUuid(), purchaseRequest.getQuantity());
+        customerService.reduceBalance(customerId, price);
+        productService.reduceQuantity(product.getId(), purchaseRequest.getQuantity());
         CartItem item = new CartItem();
         item.setTotalPrice(price);
-        item.setProduct(product.getUuid());
+        item.setProduct(product.getId());
         item.setProductName(product.getName());
-        item.setCustomer(customerDTO.getUuid());
+        item.setCustomer(customerId);
         item.setQuantity(purchaseRequest.getQuantity());
         repo.save(item);
     }

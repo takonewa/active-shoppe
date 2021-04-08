@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import za.co.mmi.activeshoppe.data.model.Customer;
 import za.co.mmi.activeshoppe.data.repo.CustomerRepo;
-import za.co.mmi.activeshoppe.service.dto.CustomerDTO;
 import za.co.mmi.activeshoppe.service.exception.CustomerNotFoundException;
 import za.co.mmi.activeshoppe.service.exception.InsufficientBalanceException;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -19,42 +18,31 @@ import java.util.stream.StreamSupport;
 public class CustomerService {
     private CustomerRepo repo;
 
-    public List<CustomerDTO> getAllProducts() {
+    public List<Customer> getAllCustomers() {
         return StreamSupport
                 .stream(repo.findAll().spliterator(), false)
-                .map(e -> modelToDTO(e))
                 .collect(Collectors.toList());
     }
 
-    private CustomerDTO modelToDTO(Customer customer) {
-        return null;
-    }
-
-    public void add(CustomerDTO customerDTO) {
-        Customer customer = dtoToModel(customerDTO);
-        customer.setCode(UUID.randomUUID().toString());
+    public void creatCustomer(Customer customer) {
         repo.save(customer);
     }
 
-    private Customer dtoToModel(CustomerDTO customerDTO) {
-        return null;
-    }
 
-    public void update(CustomerDTO customerDTO) throws CustomerNotFoundException {
-        Customer customer = repo.findByCode(customerDTO.getUuid());
-        if (customer == null) {
+    public void updateCustomer(Customer newCustomer) throws CustomerNotFoundException {
+        Optional<Customer> optionalCustomer = repo.findById(newCustomer.getId());
+        if (!optionalCustomer.isPresent()) {
             throw new CustomerNotFoundException();
         }
-        customer.setName(customerDTO.getName());
-        customer.setBalance(customerDTO.getBalance());
-        repo.save(customer);
+        repo.save(newCustomer);
     }
 
-    public void reduceBalance(String code, BigInteger amount) throws InsufficientBalanceException, CustomerNotFoundException {
-        Customer customer = repo.findByCode(code);
-        if (customer == null) {
+    public void reduceBalance(Long customerId, BigInteger amount) throws InsufficientBalanceException, CustomerNotFoundException {
+        final Optional<Customer> optionalCustomer = repo.findById(customerId);
+        if (!optionalCustomer.isPresent()) {
             throw new CustomerNotFoundException();
         }
+        Customer customer = optionalCustomer.get();
         if (customer.getBalance().compareTo(amount) < 0) {
             throw new InsufficientBalanceException();
         }
@@ -62,11 +50,11 @@ public class CustomerService {
         repo.save(customer);
     }
 
-    public CustomerDTO get(String customerId) throws CustomerNotFoundException {
-        Customer customer = repo.findByCode(customerId);
-        if (customer == null) {
+    public Customer getCustomer(Long customerId) throws CustomerNotFoundException {
+        Optional<Customer> customerOptional = repo.findById(customerId);
+        if (!customerOptional.isPresent()) {
             throw new CustomerNotFoundException();
         }
-        return modelToDTO(customer);
+        return (customerOptional.get());
     }
 }
