@@ -10,7 +10,7 @@
     </parent>
     <groupId>mmi</groupId>
     <artifactId>active-shoppe</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>active-shoppe</name>
     <description>REST API for MMI Active Shoppe</description>
     <packaging>jar</packaging>
