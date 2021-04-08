@@ -18,30 +18,30 @@ import java.util.stream.StreamSupport;
 @Service
 @AllArgsConstructor
 public class ProductService {
-    private ProductRepo repo;
+    private ProductRepo productRepo;
 
     public List<Product> getAllProducts() {
         return StreamSupport
-                .stream(repo.findAll().spliterator(), false)
+                .stream(productRepo.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
 
     public void createProduct(Product product) {
         product.setId(null);
-        repo.save(product);
+        productRepo.save(product);
     }
 
     public void updateProduct(Product product) throws ProductNotFoundException {
-        Optional<Product> optionalProduct = repo.findById(product.getId());
+        Optional<Product> optionalProduct = productRepo.findById(product.getId());
         if (!optionalProduct.isPresent()) {
             throw new ProductNotFoundException();
         }
-        repo.save(product);
+        productRepo.save(product);
     }
 
     public Product getProduct(Long productId) throws ProductNotFoundException {
-        Optional<Product> optionalProduct = repo.findById(productId);
+        Optional<Product> optionalProduct = productRepo.findById(productId);
         if (!optionalProduct.isPresent()) {
             throw new ProductNotFoundException();
         }
@@ -49,7 +49,7 @@ public class ProductService {
     }
 
     public void reduceQuantity(Long productId, BigInteger quantity) throws InsufficientQuantityException, ProductNotFoundException {
-        Optional<Product> optionalProduct = repo.findById(productId);
+        Optional<Product> optionalProduct = productRepo.findById(productId);
         if (!optionalProduct.isPresent()) {
             throw new ProductNotFoundException();
         }
@@ -58,6 +58,6 @@ public class ProductService {
             throw new InsufficientQuantityException();
         }
         product.setQuantity(product.getQuantity().subtract(quantity));
-        repo.save(product);
+        productRepo.save(product);
     }
 }

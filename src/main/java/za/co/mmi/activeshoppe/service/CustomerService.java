@@ -16,30 +16,30 @@ import java.util.stream.StreamSupport;
 @Component
 @AllArgsConstructor
 public class CustomerService {
-    private CustomerRepo repo;
+    private CustomerRepo customerRepo;
 
     public List<Customer> getAllCustomers() {
         return StreamSupport
-                .stream(repo.findAll().spliterator(), false)
+                .stream(customerRepo.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
     public void creatCustomer(Customer customer) {
         customer.setId(null);
-        repo.save(customer);
+        customerRepo.save(customer);
     }
 
 
     public void updateCustomer(Customer newCustomer) throws CustomerNotFoundException {
-        Optional<Customer> optionalCustomer = repo.findById(newCustomer.getId());
+        Optional<Customer> optionalCustomer = customerRepo.findById(newCustomer.getId());
         if (!optionalCustomer.isPresent()) {
             throw new CustomerNotFoundException();
         }
-        repo.save(newCustomer);
+        customerRepo.save(newCustomer);
     }
 
     public void reduceBalance(Long customerId, BigInteger amount) throws InsufficientBalanceException, CustomerNotFoundException {
-        final Optional<Customer> optionalCustomer = repo.findById(customerId);
+        final Optional<Customer> optionalCustomer = customerRepo.findById(customerId);
         if (!optionalCustomer.isPresent()) {
             throw new CustomerNotFoundException();
         }
@@ -48,11 +48,11 @@ public class CustomerService {
             throw new InsufficientBalanceException();
         }
         customer.setBalance(customer.getBalance().subtract(amount));
-        repo.save(customer);
+        customerRepo.save(customer);
     }
 
     public Customer getCustomer(Long customerId) throws CustomerNotFoundException {
-        Optional<Customer> customerOptional = repo.findById(customerId);
+        Optional<Customer> customerOptional = customerRepo.findById(customerId);
         if (!customerOptional.isPresent()) {
             throw new CustomerNotFoundException();
         }

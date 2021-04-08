@@ -1,6 +1,7 @@
 package za.co.mmi.activeshoppe.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Component;
 import za.co.mmi.activeshoppe.data.model.CartItem;
 import za.co.mmi.activeshoppe.data.model.Product;
@@ -18,17 +19,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+@Log
 @Component
 @AllArgsConstructor
 public class PurchaseService {
 
-    private CartItemRepo repo;
+    private CartItemRepo cartItemRepo;
     private ProductService productService;
     private CustomerService customerService;
 
     public Cart getCart(Long customerId) {
         List<CartEntry> items = StreamSupport
-                .stream(repo.findByCustomer(customerId).spliterator(), false)
+                .stream(cartItemRepo.findByCustomer(customerId).spliterator(), false)
                 .map(e -> modelToCartEntry(e))
                 .collect(Collectors.toList());
         return Cart.builder().items(items)
@@ -62,6 +64,6 @@ public class PurchaseService {
         item.setProductName(product.getName());
         item.setCustomer(customerId);
         item.setQuantity(purchaseRequest.getQuantity());
-        repo.save(item);
+        cartItemRepo.save(item);
     }
 }

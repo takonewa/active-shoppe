@@ -7,3 +7,7 @@
 ### [1.0.1-SNAPSHOT]
 
 - Clean up DTOs
+
+### [1.0.2-SNAPSHOT]
+
+- Add tests

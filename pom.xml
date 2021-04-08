@@ -10,7 +10,7 @@
     </parent>
     <groupId>mmi</groupId>
     <artifactId>active-shoppe</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <name>active-shoppe</name>
     <description>REST API for MMI Active Shoppe</description>
     <packaging>jar</packaging>
@@ -190,6 +190,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <!--
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -209,6 +210,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
         </plugins>
     </build>
     <repositories>

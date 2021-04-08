@@ -5,28 +5,32 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import za.co.mmi.activeshoppe.data.model.Customer;
+import za.co.mmi.activeshoppe.data.model.Product;
 import za.co.mmi.activeshoppe.data.repo.CustomerRepo;
 import za.co.mmi.activeshoppe.data.repo.ProductRepo;
 import za.co.mmi.activeshoppe.service.CustomerService;
 import za.co.mmi.activeshoppe.service.ProductService;
-import za.co.mmi.activeshoppe.service.exception.ProductNotFoundException;
+import za.co.mmi.activeshoppe.service.exception.InsufficientBalanceException;
+import za.co.mmi.activeshoppe.service.exception.InsufficientQuantityException;
 
-import java.util.logging.Level;
+import java.math.BigInteger;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @Log
 @RunWith(JUnitPlatform.class)
 @ExtendWith(SpringExtension.class)
 public class PurchaseServiceTest {
-    @Mock
+    @InjectMocks
     private ProductService productService;
-    @Mock
+    @InjectMocks
     private CustomerService customerService;
 
     @Mock
@@ -37,13 +41,23 @@ public class PurchaseServiceTest {
 
 
     @Test
-    public void invalidCustomerId() throws ProductNotFoundException {
-        /*when(repo.findById(anyString())).thenReturn(null);
-        when(productService.getProduct(anyString())).thenThrow(new ProductNotFoundException());
-        ProductNotFoundException productNotFoundException = assertThrows(ProductNotFoundException.class, () -> {
-            productService.getProduct(anyString());
+    public void out_of_stock() {
+        Product product = new Product(1L, "A4 Book", BigInteger.valueOf(0L), BigInteger.valueOf(0L));
+        when(productRepo.findById(1L)).thenReturn(Optional.of(product));
+        InsufficientQuantityException exception = assertThrows(InsufficientQuantityException.class, () -> {
+            productService.reduceQuantity(1L, BigInteger.valueOf(20L));
         });
-        assertNotNull(productNotFoundException);
-        log.log(Level.SEVERE, productNotFoundException.getMessage());*/
+        assertNotNull(exception);
+    }
+
+
+    @Test
+    public void insufficient_points() {
+        Customer customer = new Customer(1L, "TK", BigInteger.valueOf(0L));
+        when(customerRepo.findById(1L)).thenReturn(Optional.of(customer));
+        InsufficientBalanceException exception = assertThrows(InsufficientBalanceException.class, () -> {
+            customerService.reduceBalance(1L, BigInteger.valueOf(20L));
+        });
+        assertNotNull(exception);
     }
 }

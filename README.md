@@ -2,7 +2,7 @@
 
 ### Reference Documentation
 
-The project comes with in-memory database and similar
+The project comes with in-memory (H2) database and similar
 configuration can be setup for other relational databases
 
 #### Project Deployment
