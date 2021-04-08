@@ -16,5 +16,9 @@ To build and deploy as a docker image:
 
 http://localhost:8080/metrics
 
+#### Swagger Docs
+
+http://localhost:8080/swagger-ui/index.html
+
 
 
