@@ -36,7 +36,13 @@ public class PurchaseService {
     }
 
     private CartEntry modelToCartEntry(CartItem item) {
-        return null;
+        CartEntry cartEntry = new CartEntry();
+        cartEntry.setCode(item.getId());
+        cartEntry.setName(item.getProductName());
+        cartEntry.setQuantity(item.getQuantity());
+        cartEntry.setQuantity(item.getQuantity());
+        cartEntry.setTotalPrice(item.getTotalPrice());
+        return (cartEntry);
     }
 
     private BigInteger totalPrice(List<CartEntry> items) {

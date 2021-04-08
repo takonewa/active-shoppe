@@ -25,6 +25,7 @@ public class CustomerService {
     }
 
     public void creatCustomer(Customer customer) {
+        customer.setId(null);
         repo.save(customer);
     }
 

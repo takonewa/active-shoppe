@@ -42,7 +42,7 @@ public class ProductResource {
     @PostMapping("/")
     @ApiOperation(value = "Add New Product")
     public ResponseEntity addProduct(@RequestBody Product product) {
-        productService.addProduct(product);
+        productService.createProduct(product);
         return ResponseEntity.ok().build();
     }
 

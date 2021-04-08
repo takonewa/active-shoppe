@@ -14,9 +14,8 @@ import za.co.mmi.activeshoppe.service.exception.ProductNotFoundException;
 import java.util.logging.Level;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @Log
@@ -31,12 +30,12 @@ public class ProductServiceTest {
 
     @Test
     public void invalidCustomerId() throws  ProductNotFoundException {
-        /*when(repo.findById(anyString())).thenReturn(null);
-        when(productService.getProduct(anyString())).thenThrow(new ProductNotFoundException());
+        when(repo.findById(anyLong())).thenReturn(null);
+        when(productService.getProduct(anyLong())).thenThrow(new ProductNotFoundException());
         ProductNotFoundException productNotFoundException = assertThrows(ProductNotFoundException.class, () -> {
-            productService.getProduct(anyString());
+            productService.getProduct(anyLong());
         });
         assertNotNull(productNotFoundException);
-        log.log(Level.SEVERE, productNotFoundException.getMessage());*/
+        log.log(Level.SEVERE, productNotFoundException.getMessage());
     }
 }

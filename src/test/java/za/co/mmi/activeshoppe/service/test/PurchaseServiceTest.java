@@ -7,7 +7,9 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import za.co.mmi.activeshoppe.data.repo.CustomerRepo;
 import za.co.mmi.activeshoppe.data.repo.ProductRepo;
+import za.co.mmi.activeshoppe.service.CustomerService;
 import za.co.mmi.activeshoppe.service.ProductService;
 import za.co.mmi.activeshoppe.service.exception.ProductNotFoundException;
 
@@ -22,14 +24,20 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnitPlatform.class)
 @ExtendWith(SpringExtension.class)
 public class PurchaseServiceTest {
-
-    @Mock
-    private ProductRepo repo;
     @Mock
     private ProductService productService;
+    @Mock
+    private CustomerService customerService;
+
+    @Mock
+    private CustomerRepo customerRepo;
+
+    @Mock
+    private ProductRepo productRepo;
+
 
     @Test
-    public void invalidCustomerId() throws  ProductNotFoundException {
+    public void invalidCustomerId() throws ProductNotFoundException {
         /*when(repo.findById(anyString())).thenReturn(null);
         when(productService.getProduct(anyString())).thenThrow(new ProductNotFoundException());
         ProductNotFoundException productNotFoundException = assertThrows(ProductNotFoundException.class, () -> {

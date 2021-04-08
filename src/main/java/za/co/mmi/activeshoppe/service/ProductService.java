@@ -27,7 +27,8 @@ public class ProductService {
     }
 
 
-    public void addProduct(Product product) {
+    public void createProduct(Product product) {
+        product.setId(null);
         repo.save(product);
     }
 
