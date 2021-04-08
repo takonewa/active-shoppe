@@ -19,6 +19,8 @@ import za.co.mmi.activeshoppe.service.exception.InsufficientBalanceException;
 import za.co.mmi.activeshoppe.service.exception.InsufficientQuantityException;
 import za.co.mmi.activeshoppe.service.exception.ProductNotFoundException;
 
+import javax.validation.Valid;
+
 
 @RestController
 @AllArgsConstructor
@@ -29,14 +31,14 @@ public class ShoppingResource {
     private PurchaseService purchaseService;
 
     @GetMapping("/cart/{customer-id}")
-    @ApiOperation(value = "Get Customer Cart")
+    @ApiOperation(value = "Get Customer Cart", response = Cart.class)
     public Cart cart(@PathVariable("customer-id") Long customerId) {
         return purchaseService.getCart(customerId);
     }
 
     @PostMapping("/purchase/{customer-id}")
-    @ApiOperation(value = "Buy Product")
-    public ResponseEntity purchase(@PathVariable("customer-id") Long customerId, @RequestBody PurchaseRequest request) throws CustomerNotFoundException, InsufficientBalanceException, ProductNotFoundException, InsufficientQuantityException {
+    @ApiOperation(value = "Buy Product", code = 200)
+    public ResponseEntity purchase(@PathVariable("customer-id") Long customerId, @Valid @RequestBody PurchaseRequest request) throws CustomerNotFoundException, InsufficientBalanceException, ProductNotFoundException, InsufficientQuantityException {
         purchaseService.buy(customerId, request);
         return ResponseEntity.ok().build();
     }

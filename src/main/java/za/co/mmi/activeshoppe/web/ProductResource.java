@@ -16,6 +16,7 @@ import za.co.mmi.activeshoppe.data.model.Product;
 import za.co.mmi.activeshoppe.service.ProductService;
 import za.co.mmi.activeshoppe.service.exception.ProductNotFoundException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -28,27 +29,27 @@ public class ProductResource {
     private ProductService productService;
 
     @GetMapping("/")
-    @ApiOperation(value = "List All Products")
+    @ApiOperation(value = "List All Products", response =Product.class, responseContainer = "List")
     public List<Product> allProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{product-id}")
-    @ApiOperation(value = "Get Product By UUID")
+    @ApiOperation(value = "Get Product By UUID", response = Product.class)
     public Product getProduct(@PathVariable("product-id") Long productId) throws ProductNotFoundException {
         return productService.getProduct(productId);
     }
 
     @PostMapping("/")
     @ApiOperation(value = "Add New Product")
-    public ResponseEntity addProduct(@RequestBody Product product) {
+    public ResponseEntity addProduct(@Valid @RequestBody Product product) {
         productService.createProduct(product);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/")
-    @ApiOperation(value = "Update Existing Product")
-    public ResponseEntity updateProduct(@RequestBody Product product) throws ProductNotFoundException {
+    @ApiOperation(value = "Update Existing Product", code = 200)
+    public ResponseEntity updateProduct(@Valid @RequestBody Product product) throws ProductNotFoundException {
         productService.updateProduct(product);
         return ResponseEntity.ok().build();
     }

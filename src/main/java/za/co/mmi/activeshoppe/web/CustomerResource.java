@@ -28,13 +28,13 @@ public class CustomerResource {
     private CustomerService customerService;
 
     @GetMapping("/")
-    @ApiOperation(value = "List All Customers")
+    @ApiOperation(value = "List All Customers", response = Customer.class, responseContainer = "List")
     public List<Customer> listAll() {
         return customerService.getAllCustomers();
     }
 
     @GetMapping("/{customer-id}")
-    @ApiOperation(value = "Get Customer By UUID")
+    @ApiOperation(value = "Get Customer By Id", response = Customer.class)
     public Customer getCustomer(@PathVariable("customer-id") Long customerId) throws CustomerNotFoundException {
         return customerService.getCustomer(customerId);
     }
