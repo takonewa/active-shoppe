@@ -1,0 +1,34 @@
+# Server settings
+server:
+  port: 8080
+  servlet:
+    context-path: /
+spring:
+  application:
+    name: active-shoppe
+  datasource:
+    url: ${app-db.url}
+    username: ${app-db.username}
+    password: ${app-db.password}
+    platform: ${app-db.urplatform}
+  jpa:
+    hibernate:
+      ddl-auto: update
+debug: false
+api:
+  version: 1.0
+# App specific settings
+app-db:
+  username: sa
+  password: password
+  url: jdbc:h2:mem:activeshppe
+  urplatform: org.hibernate.dialect.H2Dialect
+# SWAGGER DOCS
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    url: ${server.servlet.context-path}/v3/api-docs
+    config-url: ${server.servlet.context-path}/v3/api-docs/swagger-config
